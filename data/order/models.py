@@ -17,12 +17,23 @@ class Order(BaseModel):
         ("CANCELLED", "Cancelled"),  # Bekor qilindi
     )
 
+    PAYMENT_METHOD_CHOICES = (
+        ("CARD", "Karta"),  # Karta orqali
+        ("CASH", "Naqd"),  # Naqd pul orqali
+    )
+
     customer: "Customer" = models.ForeignKey(
         "customer.Customer",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name="orders",
+    )
+
+    payment_method = models.CharField(
+        max_length=10,
+        choices=PAYMENT_METHOD_CHOICES,
+        default="CASH"
     )
 
     total_price = models.DecimalField(

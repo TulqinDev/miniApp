@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 class BotUser(BaseModel):
     chat_id = models.BigIntegerField(unique=True)
-    name = models.CharField(
+    tg_name = models.CharField(
         max_length=100,
         null=True,
         blank=True
