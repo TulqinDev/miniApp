@@ -25,7 +25,7 @@ schema_view = get_schema_view(
     openapi.Info(
         title="API",
         default_version="v1",
-        description="Lux Climate API",
+        description="miniApp API",
         contact=openapi.Contact(email="tulqinurinov005@gmail.com"),
         license=openapi.License(name="BSD License"),
     ),
@@ -38,6 +38,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("user/", include("data.user.urls")),
     path("category/", include("data.category.urls")),
+    path("file/", include("data.file.urls")),
 
     # Swagger
     re_path(
