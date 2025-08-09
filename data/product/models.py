@@ -9,8 +9,7 @@ if TYPE_CHECKING:
 
 
 class Product(BaseModel):
-    name_uz = models.CharField(max_length=120)
-    name_ru = models.CharField(max_length=120)
+    name = models.CharField(max_length=120)
     category: "Category" = models.ForeignKey(
         "category.Category",
         on_delete=models.SET_NULL,
@@ -30,5 +29,4 @@ class Product(BaseModel):
         decimal_places=2
     )
 
-    description_uz = models.TextField()
-    description_ru = models.TextField()
+    description = models.TextField()
