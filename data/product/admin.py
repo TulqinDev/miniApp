@@ -14,3 +14,6 @@ class ProductAdmin(admin.ModelAdmin):
     )
 
     list_filter = ("category",)
+
+    def get_category(self, obj):
+        return obj.category.name

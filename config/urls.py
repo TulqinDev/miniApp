@@ -39,6 +39,8 @@ urlpatterns = [
     path("user/", include("data.user.urls")),
     path("category/", include("data.category.urls")),
     path("file/", include("data.file.urls")),
+    path("product/", include("data.product.urls")),
+    path("order/", include("data.order.urls")),
 
     # Swagger
     re_path(
