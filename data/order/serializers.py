@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from data.customer.models import Customer
 from data.order.models import Order
 from data.order_product.models import OrderProduct
 from data.order_product.serializers import OrderProductSerializer
@@ -11,6 +12,7 @@ class OrderCreateSerializer(serializers.ModelSerializer):
     total_price = serializers.DecimalField(
         max_digits=10,
         decimal_places=2,
+        default=0,
         read_only=True
     )
 
@@ -31,8 +33,10 @@ class OrderCreateSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         products_data = validated_data.pop('products')
 
-        # middleware orqali keladi
-        customer = self.context["request"].customer
+        # # middleware orqali keladi
+        # customer = self.context["request"].customer
+
+        customer = Customer.objects.first()  # Test uchun
 
         if not customer:
             raise serializers.ValidationError("Customer not found in request.")
@@ -43,6 +47,7 @@ class OrderCreateSerializer(serializers.ModelSerializer):
 
         for item in products_data:
             product = item["product"]
+            print(product)
             quantity = item["quantity"]
 
             total_price += product.price * quantity

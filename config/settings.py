@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     "rest_framework",
     "drf_yasg",
+    'rest_framework_simplejwt',
 
     # app
     "data.bot",
@@ -55,6 +56,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+
+    'data.bot.middleware.BotUserJWTMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

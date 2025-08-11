@@ -18,3 +18,5 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def get_category(self, obj):
         return obj.category.name
+
+

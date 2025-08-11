@@ -6,9 +6,11 @@ from data.product.models import Product
 
 class OrderProductSerializer(serializers.ModelSerializer):
     product = serializers.PrimaryKeyRelatedField(
-        queryset=Product.objects.all(), source="order_products"
+        queryset=Product.objects.all()
     )
+
+    name = serializers.CharField(source='product.name', read_only=True)
 
     class Meta:
         model = OrderProduct
-        fields = ("product", "quantity")
+        fields = ("product", "name", "quantity")
