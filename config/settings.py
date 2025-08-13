@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     "data.file",
     "data.order_product",
     "data.order",
-
+    "data.location",
 ]
 
 MIDDLEWARE = [

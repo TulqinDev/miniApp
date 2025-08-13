@@ -22,3 +22,7 @@ class OrderProduct(BaseModel):
     )
 
     quantity = models.PositiveIntegerField(default=1)
+
+
+    def __str__(self):
+        return f"{self.order} - {self.product}"

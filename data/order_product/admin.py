@@ -13,4 +13,6 @@ class OrderProductAdmin(admin.ModelAdmin):
 
     list_filter = ("order",)
 
+    ordering = ("order", "-created_at")
+
 

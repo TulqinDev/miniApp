@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.db import models
 from typing import TYPE_CHECKING
 
@@ -5,6 +7,7 @@ from data.common.models import BaseModel
 
 if TYPE_CHECKING:
     from data.customer.models import Customer
+    from data.location.models import Location
 
 
 class Order(BaseModel):
@@ -39,7 +42,7 @@ class Order(BaseModel):
     total_price = models.DecimalField(
         max_digits=10,
         decimal_places=2,
-        default=0
+        default=Decimal('0.00')
     )
 
     status = models.CharField(
@@ -47,3 +50,14 @@ class Order(BaseModel):
         choices=STATUS_CHOICES,
         default="PENDING"
     )
+
+    location: "Location" = models.ForeignKey(
+        "location.Location",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="orders",
+    )
+
+    def __str__(self):
+        return f"{self.customer}"

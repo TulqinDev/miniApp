@@ -24,7 +24,8 @@ class OrderCreateSerializer(serializers.ModelSerializer):
             "payment_method",
             "products",
             "total_price",
-            "status"
+            "status",
+            "location"
         )
 
     def get_customer(self, obj):
