@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "data.order_product",
     "data.order",
     "data.location",
+    "data.deliver",
 ]
 
 MIDDLEWARE = [

@@ -42,6 +42,7 @@ urlpatterns = [
     path("product/", include("data.product.urls")),
     path("order/", include("data.order.urls")),
     path("location/", include("data.location.urls")),
+    path("deliver/", include("data.deliver.urls")),
 
     # Swagger
     re_path(

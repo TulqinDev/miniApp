@@ -4,7 +4,7 @@ from rest_framework.exceptions import ValidationError
 from data.common.models import BaseModel
 
 
-class User(BaseModel):
+class Deliver(BaseModel):
     name = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=20, unique=True)
 
@@ -24,8 +24,3 @@ class User(BaseModel):
     def save(self, *args, **kwargs):
         self.full_clean()
         super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.name
-
-

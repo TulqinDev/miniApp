@@ -6,6 +6,7 @@ from data.common.models import BaseModel
 if TYPE_CHECKING:
     from data.user.models import User
     from data.customer.models import Customer
+    from data.deliver.models import Deliver
 
 
 class BotUser(BaseModel):
@@ -31,6 +32,14 @@ class BotUser(BaseModel):
 
     customer: "Customer" = models.ForeignKey(
         "customer.Customer",
+        on_delete=models.CASCADE,
+        related_name="bot_users",
+        null=True,
+        blank=True,
+    )
+
+    deliver: "Deliver" = models.ForeignKey(
+        "deliver.Deliver",
         on_delete=models.CASCADE,
         related_name="bot_users",
         null=True,
