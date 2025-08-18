@@ -30,7 +30,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["127.0.0.1",
                  "localhost",
                  "13.60.82.148",
-                 "ec2-13-60-82-148.eu-north-1.compute.amazonaws.com",
+                 # "ec2-13-60-82-148.eu-north-1.compute.amazonaws.com",
                  ]
 
 # Application definition
@@ -191,7 +191,7 @@ CORS_ALLOW_HEADERS = (
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
-    "http://ec2-13-60-82-148.eu-north-1.compute.amazonaws.com:8000",
+    # "http://ec2-13-60-82-148.eu-north-1.compute.amazonaws.com:8000",
     "http://13.60.82.148:8000",
 
     "http://localhost:3000",
@@ -210,7 +210,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://ec2-13-60-82-148.eu-north-1.compute.amazonaws.com:8000",
+    # "http://ec2-13-60-82-148.eu-north-1.compute.amazonaws.com:8000",
     "http://13.60.82.148:8000",
 
     "http://127.0.0.1:8000",
