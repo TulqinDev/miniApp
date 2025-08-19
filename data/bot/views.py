@@ -1,3 +1,5 @@
+import os
+
 from decouple import config
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -10,7 +12,7 @@ from .permission import IsBotAuthenticated
 
 from telegram_webapp_auth.auth import TelegramAuthenticator, generate_secret_key
 
-BOT_TOKEN = config("BOT_TOKEN")
+BOT_TOKEN = os.environ.get("TOKEN")
 
 if not BOT_TOKEN:
     raise ValidationError("Bot token not found")
