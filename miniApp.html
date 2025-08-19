@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Telegram MiniApp — init_data test</title>
+
+  <!-- Telegram WebApp JS SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    body { margin: 0; padding: 16px; background: #0f1115; color: #e6e6e6; }
+    .card { background: #171a21; border: 1px solid #2a2f3a; border-radius: 14px; padding: 16px; max-width: 720px; margin: 0 auto; }
+    h1 { margin: 0 0 12px; font-size: 20px; }
+    .muted { color: #a5adba; font-size: 14px; }
+    pre { background: #0b0d12; color: #d6e0ff; padding: 12px; border-radius: 10px; overflow: auto; border: 1px solid #222838; }
+    .row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    button {
+      border: 1px solid #3a4354; background: #1e2430; color: #e6e6e6;
+      padding: 10px 14px; border-radius: 10px; cursor: pointer;
+    }
+    button:hover { background: #252c3a; }
+    .ok { color: #5be49b; }
+    .err { color: #ff7b7b; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .pill { font-size: 12px; padding: 4px 8px; border-radius: 999px; border: 1px solid #2f3746; background: #141924; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Telegram <span class="pill">MiniApp</span> — <span class="mono">init_data</span> test</h1>
+    <p class="muted">
+      Ushbu sahifa Telegram WebApp ichida ochilganda <span class="mono">init_data</span> ni oladi va
+      <span class="mono">http://13.60.82.148:8000/bot/access/</span> ga yuboradi.
+    </p>
+
+    <div id="envWarn" class="muted" style="margin: 8px 0 14px;"></div>
+
+    <h3>init_data</h3>
+    <pre id="initDataBox">Yuklanmoqda…</pre>
+
+    <div class="row">
+      <button id="sendBtn">Serverga yuborish</button>
+      <button id="copyBtn">init_data ni nusxalash</button>
+    </div>
+
+    <div id="status" style="margin-top:12px;"></div>
+
+    <h3 style="margin-top:18px;">Foydalanuvchi (initDataUnsafe)</h3>
+    <pre id="userBox">Yuklanmoqda…</pre>
+  </div>
+
+  <script>
+    // UI elements
+    const initDataBox = document.getElementById('initDataBox');
+    const userBox = document.getElementById('userBox');
+    const statusEl = document.getElementById('status');
+    const sendBtn = document.getElementById('sendBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const envWarn = document.getElementById('envWarn');
+
+    // Helper: set status text
+    function setStatus(msg, type='') {
+      statusEl.innerHTML = `<span class="${type === 'ok' ? 'ok' : (type === 'err' ? 'err' : 'muted')}">${msg}</span>`;
+    }
+
+    // Detect Telegram WebApp context
+    const isInTelegram = !!(window.Telegram && Telegram.WebApp);
+    if (!isInTelegram) {
+      envWarn.innerHTML = '⚠️ Bu sahifa Telegram WebApp ichida ochilmagan. ' +
+        'init_data faqat botdagi WebApp tugmasi orqali ochilganda keladi.';
+    } else {
+      envWarn.textContent = '✅ Telegram WebApp aniqlangan.';
+    }
+
+    // Read init_data and parsed data
+    const initData = isInTelegram ? (Telegram.WebApp.initData || '') : '';
+    const unsafe = isInTelegram ? (Telegram.WebApp.initDataUnsafe || {}) : {};
+
+    // Show raw init_data (trim very long)
+    initDataBox.textContent = initData ? initData : '(bo‘sh)';
+
+    // Show parsed user info if available
+    userBox.textContent = JSON.stringify({
+      user: unsafe.user || null,
+      chat_type: unsafe.chat_type || null,
+      chat_instance: unsafe.chat_instance || null,
+      start_param: unsafe.start_param || null,
+      auth_date: unsafe.auth_date || null,
+      query_id: unsafe.query_id || null
+    }, null, 2);
+
+    // Auto-expand to full screen (nice UX inside Telegram)
+    if (isInTelegram) {
+      try {
+        Telegram.WebApp.expand();
+        Telegram.WebApp.ready();
+      } catch (e) {}
+    }
+
+    async function postInitData() {
+      if (!initData) {
+        setStatus('init_data topilmadi. Ushbu sahifani bot WebApp tugmasi orqali oching.', 'err');
+        return;
+      }
+      setStatus('Yuborilmoqda…');
+
+      try {
+        const res = await fetch('http://13.60.82.148:8000/bot/access/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ init_data: initData }) // ❗ server kutayotgan kalit nomi
+        });
+
+        const text = await res.text();
+        let payload = null;
+        try { payload = JSON.parse(text); } catch (_) { /* keep raw text */ }
+
+        if (res.ok) {
+          setStatus('✅ Server qabul qildi.', 'ok');
+        } else {
+          setStatus(`❌ Server xatosi (${res.status}). Javob: ${text}`, 'err');
+        }
+
+        // Show server response below
+        const respBlock = document.createElement('pre');
+        respBlock.textContent = payload ? JSON.stringify(payload, null, 2) : text;
+        respBlock.style.marginTop = '8px';
+        statusEl.appendChild(respBlock);
+      } catch (err) {
+        setStatus(`❌ Ulanish xatosi: ${err.message}`, 'err');
+      }
+    }
+
+    // Buttons
+    sendBtn.addEventListener('click', postInitData);
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(initData || '');
+        setStatus('📋 init_data nusxalandi.', 'ok');
+      } catch (e) {
+        setStatus('❌ Nusxalab bo‘lmadi. Qo‘lda belgilang va ko‘chiring.', 'err');
+      }
+    });
+
+    // Auto-send on load (Telegram ichida bo‘lsa)
+    if (isInTelegram) {
+      postInitData();
+    }
+  </script>
+</body>
+</html>
