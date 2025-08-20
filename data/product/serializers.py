@@ -17,6 +17,4 @@ class ProductSerializer(serializers.ModelSerializer):
         )
 
     def get_category(self, obj):
-        return obj.category.name
-
-
+        return obj.category.name if obj.category else None
