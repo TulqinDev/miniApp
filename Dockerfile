@@ -1,12 +1,5 @@
 FROM python:3.13-slim
 
-## Tizim paketlarini o‘rnatamiz
-#RUN apt-get update && apt-get install -y \
-#    libreoffice \
-#    fonts-dejavu-core \
-#    && apt-get clean \
-#    && rm -rf /var/lib/apt/lists/*
-
 # Muhit o‘zgaruvchilar
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
