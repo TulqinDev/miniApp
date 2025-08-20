@@ -26,8 +26,8 @@ NAME, CONTACT = range(2)
 
 
 class Bot:
-    USER_MINI_APP_URL = "http://13.60.82.148:8000/miniapp_test.html"
-    CUSTOMER_MINI_APP_URL = "http://13.60.82.148:8000/miniapp_test.html"
+    USER_MINI_APP_URL = "earfsgtdhnhbv"
+    CUSTOMER_MINI_APP_URL = "gzhntbsgfsrgethy"
 
     def __init__(self):
         TOKEN = os.environ.get("TOKEN")
