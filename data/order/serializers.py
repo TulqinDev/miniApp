@@ -34,10 +34,10 @@ class OrderCreateSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         products_data = validated_data.pop('products')
 
-        # middleware orqali keladi
-        customer = self.context["request"].customer
+        # # middleware orqali keladi
+        # customer = self.context["request"].customer
 
-        # customer = Customer.objects.first()  # Test uchun
+        customer = Customer.objects.first()  # Test uchun
 
         if not customer:
             raise serializers.ValidationError("Customer not found in request.")
